@@ -20,11 +20,9 @@
 
 - [8. Active Directory Structure](#8-active-directory-structure)
 - [9. File Sharing & Permissions](#9-file-sharing--permissions)
-- [10. Screenshots (Step-by-Step Documentation)](#10-screenshots-step-by-step-documentation)
-- [11. Challenges & Solutions](#11-challenges--solutions)
-- [12. What I Learned](#12-what-i-learned)
-- [13. Future Improvements](#13-future-improvements)
-- [14. Conclusion](#14-conclusion)
+- [10. What I Learned](#12-what-i-learned)
+- [11. Future Improvements](#13-future-improvements)
+
 
 ## 1. Overview
 
