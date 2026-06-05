@@ -69,7 +69,8 @@ Before starting, ensure you have:
 
 The environment consists of one domain controller and two client machines connected on a private virtual network.
 
-
+            [ enterpriseit.local Domain ]
+                        |
                 [ Domain Controller ]
               DC01 - Windows Server 2025
                         |
