@@ -20,8 +20,8 @@
 
 - [8. Active Directory Structure](#8-active-directory-structure)
 - [9. File Sharing & Permissions](#9-file-sharing--permissions)
-- [10. What I Learned](#12-what-i-learned)
-- [11. Future Improvements](#13-future-improvements)
+- [10. What I Learned](#10-what-i-learned)
+- [11. Future Improvements](#11-future-improvements)
 
 
 ## 1. Overview
@@ -66,6 +66,9 @@ Before starting, ensure you have:
 
 
 ## 6. Network Architecture
+
+The environment consists of one domain controller and two client machines connected on a private virtual network.
+
 
                 [ Domain Controller ]
               DC01 - Windows Server 2025
@@ -161,7 +164,7 @@ A static IP address was configured to support Active Directory services.
 - Default Gateway: `192.168.50.2`
 - Preferred DNS: `192.168.50.10`
 
-This configuration ensures that DC01 maintains a stable network identity and functions correctly as both a DNS and Active Directory server.
+This configuration ensures DC01 maintains a stable identity required for Active Directory and DNS services.
 
 <img width="1119" height="631" alt="Screenshot 2026-06-03 195201" src="https://github.com/user-attachments/assets/a77a5e5f-0cfb-4592-9c1c-ca6aa3ce267b" />
 
@@ -173,7 +176,7 @@ This configuration ensures that DC01 maintains a stable network identity and fun
 
 ## 7.4 Active Directory Installation
 
-The Active Directory Domain Services (AD DS) role was installed using Server Manager.  
+This section covers the installation and configuration of Active Directory Domain Services (AD DS) on DC01.
 This step enabled DC01 to function as a domain controller and provide authentication services within the network.
 
 ### Add Roles and Features Wizard
