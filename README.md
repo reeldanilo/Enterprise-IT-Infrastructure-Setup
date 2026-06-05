@@ -180,7 +180,159 @@ This ensures that the server maintains a stable network identity and acts as its
 This setup forms the foundation of a small enterprise IT infrastructure, allowing Active Directory, DNS, and domain services to be configured in later steps.
 
 ---
+## 7.4 Active Directory Installation
 
+The Active Directory Domain Services (AD DS) role was installed using Server Manager.
+
+### Step 1 — Add Roles and Features Wizard
+
+<img width="789" height="560" alt="Screenshot 2026-06-04 182845" src="https://github.com/user-attachments/assets/255a2c7f-0bed-45d5-8872-d56d60dd2466" />
+
+Open the **Add Roles and Features Wizard** from Server Manager.
+
+---
+
+### Step 2 — Installation Type
+
+<img width="787" height="554" alt="Screenshot 2026-06-04 182858" src="https://github.com/user-attachments/assets/3f16cb66-b1f7-4c04-a187-41129b407d89" />
+
+Select **Role-based or feature-based installation**.
+
+---
+
+### Step 3 — Server Selection
+
+<img width="787" height="556" alt="Screenshot 2026-06-04 182914" src="https://github.com/user-attachments/assets/4c007778-a334-4fc6-88fd-cebe7b8e0397" />
+
+Select the target server: **DC01**.
+
+---
+
+### Step 4 — Server Roles
+
+<img width="768" height="552" alt="Screenshot 2026-06-04 182935" src="https://github.com/user-attachments/assets/2f7048db-c210-4801-b7b2-1455a53908c9" />
+
+Select **Active Directory Domain Services**.
+
+---
+
+### Step 5 — Features
+
+<img width="786" height="556" alt="Screenshot 2026-06-04 182949" src="https://github.com/user-attachments/assets/f43c8854-6717-4023-a415-3415c692ec54" />
+
+Proceed through the **Features** section without changes.
+
+---
+
+### Step 6 — AD DS Information
+
+<img width="784" height="560" alt="Screenshot 2026-06-04 183839" src="https://github.com/user-attachments/assets/25cbf5e3-7ba9-41de-b141-78dc9119d40a" />
+
+Continue through the **Active Directory Domain Services information page**.
+
+---
+
+### Step 7 — Confirmation
+
+<img width="787" height="557" alt="Screenshot 2026-06-04 184015" src="https://github.com/user-attachments/assets/b0a08cb1-fe00-47cb-b043-0bbac0dd9511" />
+
+Verify all settings and click **Install**.
+
+---
+
+## 7.5 Domain Promotion
+
+After installation, a post-deployment configuration notification appeared.
+
+---
+
+### Step 1 — Promote This Server
+
+<img width="421" height="351" alt="Screenshot 2026-06-04 184523" src="https://github.com/user-attachments/assets/5cfe8d36-3e5f-4886-bdd0-8f0186114edf" />
+
+
+Click **Promote this server to a domain controller**.
+
+---
+
+### Step 2 — Deployment Configuration
+
+<img width="759" height="562" alt="Screenshot 2026-06-04 191307" src="https://github.com/user-attachments/assets/75c54e14-1436-4dd4-a947-5ff2bf0b6a3f" />
+
+Select **Add a new forest** and set the domain name to enterpriseit.local
+
+---
+
+### Step 3 — Domain Controller Options
+
+<img width="759" height="562" alt="Screenshot 2026-06-04 191748" src="https://github.com/user-attachments/assets/4ec9c866-c7ba-4ab0-a087-ad8ecfef8b3f" />
+
+Set the **DSRM password** and proceed.
+
+---
+
+### Step 4 — DNS Configuration
+
+<img width="761" height="558" alt="Screenshot 2026-06-04 191831" src="https://github.com/user-attachments/assets/d083db4c-6fd3-4c1f-a4da-d67ac36a8b2a" />
+
+Continue with default DNS options.
+
+---
+
+### Step 5 — NetBIOS Name
+
+<img width="761" height="561" alt="Screenshot 2026-06-04 191856" src="https://github.com/user-attachments/assets/d05b196e-daf6-4866-8102-d7d1929aa49b" />
+
+
+Proceed using the automatically generated NetBIOS name.
+
+---
+
+### Step 6 — Paths
+
+<img width="763" height="563" alt="Screenshot 2026-06-04 191918" src="https://github.com/user-attachments/assets/5e8e90e9-79a4-43ef-8933-a35f350dd37e" />
+
+Accept default file paths.
+
+---
+
+### Step 7 — Review Options
+
+<img width="763" height="565" alt="Screenshot 2026-06-04 192240" src="https://github.com/user-attachments/assets/5e72bb5b-f912-49e9-867c-581719c4b4a9" />
+
+Review settings and continue.
+
+---
+
+### Step 8 — Prerequisites Check & Installation
+
+<img width="768" height="561" alt="Screenshot 2026-06-04 193836" src="https://github.com/user-attachments/assets/6c4147ff-0caf-4969-ba15-38bdc07452f9" />
+
+Run prerequisite checks and click **Install**. The system will restart automatically.
+
+---
+
+## 7.6 Post-Installation Verification
+
+After restart, log in and verify Active Directory services.
+
+<img width="919" height="640" alt="Screenshot 2026-06-04 205028" src="https://github.com/user-attachments/assets/3def871a-cf67-4175-a75b-44b82fa83d2f" />
+
+<img width="368" height="720" alt="Screenshot 2026-06-04 201704" src="https://github.com/user-attachments/assets/c21be900-75e1-4994-af7f-3fd0954ca8e9" />
+
+Confirm that **Active Directory Users and Computers** and **DNS** are available in Server Manager.
+
+The domain enterpriseit.local is now active and accessible.
+
+---
+
+## 7.7 Organizational Unit Setup
+
+A new Organizational Unit (OU) was created to structure the domain:
+
+- **IT**
+
+This OU will be used for organizing users and resources in the domain environment.
 
 
 ## Project Status
