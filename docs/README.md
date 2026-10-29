@@ -81,8 +81,6 @@ The environment consists of one domain controller and two client machines connec
 
 ## 7. Setup Steps
 
----
-
 ## 7.1 VMware Installation & VM Setup
 
 VMware Workstation Pro was installed to create and manage virtual machines for the lab environment.
@@ -99,10 +97,6 @@ Each VM was configured with:
 - 2–4 GB RAM (Clients)
 - NAT network (initial setup)
 - 60 GB virtual disk (single file)
-
-
----
-
 
 ---
 
@@ -310,23 +304,27 @@ Run prerequisite checks and click **Install**. The system restarts automatically
 
 After restart, Active Directory services were verified successfully:
 
-<img width="919" height="640" alt="Screenshot 2026-06-04 205028" src="https://github.com/user-attachments/assets/3def871a-cf67-4175-a75b-44b82fa83d2f" />
-
-<img width="368" height="720" alt="Screenshot 2026-06-04 201704" src="https://github.com/user-attachments/assets/18bda716-326c-4b43-8b47-ef2d08ff78dd" />
-
-
 Active Directory Users and Computers and DNS were confirmed in Server Manager.
 
 The domain **enterpriseit.local** is now active and fully operational.
 
-<img width="757" height="523" alt="Screenshot 2026-06-04 202953" src="https://github.com/user-attachments/assets/8b93d115-5a17-4daf-a41c-6565a9c9fe23" />
+<img width="919" height="640" alt="Screenshot 2026-06-04 205028" src="https://github.com/user-attachments/assets/3def871a-cf67-4175-a75b-44b82fa83d2f" />
 
-<img width="434" height="379" alt="Screenshot 2026-06-04 203020" src="https://github.com/user-attachments/assets/6af006de-294d-4b30-93e8-369876e84146" />
+---
 
+<img width="368" height="720" alt="Screenshot 2026-06-04 201704" src="https://github.com/user-attachments/assets/18bda716-326c-4b43-8b47-ef2d08ff78dd" />
+
+---
 
 A basic Active Directory structure was created:
 
 - **IT**
 
 This OU will be used to organize users, groups, and future resources within the domain.
+
+<img width="757" height="523" alt="Screenshot 2026-06-04 202953" src="https://github.com/user-attachments/assets/8b93d115-5a17-4daf-a41c-6565a9c9fe23" />
+
+---
+
+<img width="434" height="379" alt="Screenshot 2026-06-04 203020" src="https://github.com/user-attachments/assets/6af006de-294d-4b30-93e8-369876e84146" />
 
