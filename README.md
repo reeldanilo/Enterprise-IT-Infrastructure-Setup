@@ -6,8 +6,6 @@ This project simulates a small enterprise IT environment using Windows Server 20
 
 The goal is to gain hands-on experience with IT infrastructure administration, including server deployment, network configuration, domain management, user authentication, and centralized computer management.
 
-The environment is built progressively to replicate common tasks performed by IT support technicians and system administrators.
-
 ## Technologies Used
 
 | Category | Technologies |
@@ -16,9 +14,9 @@ The environment is built progressively to replicate common tasks performed by IT
 | Server OS | Windows Server 2025 Evaluation |
 | Client OS | Windows 11 Enterprise Evaluation |
 | Directory Services | Active Directory Domain Services (AD DS) |
-| Networking | TCP/IP, DNS, VMware NAT |
+| Networking | TCP/IP, DNS |
 | Administration | Active Directory Users and Computers |
-| Planned | Group Policy, DHCP Server, File Services |
+| Planned | Group Policy, DHCP Server |
 
 ## Network Architecture
 
