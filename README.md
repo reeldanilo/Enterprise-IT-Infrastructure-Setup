@@ -2,8 +2,6 @@
 
 A Windows Server home lab built with VMware Workstation Pro. I'm using it to practice managing a small Windows domain, from setting up the domain controller to joining client computers and applying Group Policies.
 
-For the installation steps, commands, and additional screenshots, see the [setup documentation](docs/README.md).
-
 ## Lab Setup
 
 | Machine | Operating system | Role | IP address |
