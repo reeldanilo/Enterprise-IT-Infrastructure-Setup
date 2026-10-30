@@ -1,105 +1,76 @@
 # Enterprise IT Infrastructure Home Lab
 
-## Overview
+A Windows Server home lab built with VMware Workstation Pro. I'm using it to practice managing a small Windows domain, from setting up the domain controller to joining client computers and applying Group Policies.
 
-This project simulates a small enterprise IT environment using Windows Server 2025, Active Directory, and VMware Workstation Pro.
+For the installation steps, commands, and additional screenshots, see the [setup documentation](docs/README.md).
 
-The goal is to gain hands-on experience with IT infrastructure administration, including server deployment, network configuration, domain management, user authentication, and centralized computer management.
+## Lab Setup
 
-## Technologies Used
+| Machine | Operating system | Role | IP address |
+| --- | --- | --- | --- |
+| DC01 | Windows Server 2025 Evaluation | Domain controller and DNS server | `192.168.50.10` (static) |
+| PC01 | Windows 11 Enterprise Evaluation | Domain-joined workstation | DHCP |
+| PC02 | Windows 11 Enterprise Evaluation | Second workstation | Planned |
 
-| Category | Technologies |
-|---|---|
-| Virtualization | VMware Workstation Pro |
-| Server OS | Windows Server 2025 Evaluation |
-| Client OS | Windows 11 Enterprise Evaluation |
-| Directory Services | Active Directory Domain Services (AD DS) |
-| Networking | TCP/IP, DNS |
-| Administration | Active Directory Users and Computers |
-| Planned | Group Policy, DHCP Server |
+- **Domain:** `enterpriseit.local`
+- **Network:** `192.168.50.0/24` (VMware NAT)
+- **DNS for PC01:** `192.168.50.10` (DC01)
+- **Tools and services:** VMware Workstation Pro, Active Directory Domain Services (AD DS), DNS, Group Policy
 
-## Network Architecture
-
-The lab uses a virtual NAT network connecting a Windows Server domain controller and Windows client machines.
+### Network Diagram
 
 ```text
-             enterpriseit.local
-                     |
-           DC01 - Domain Controller
-             Windows Server 2025
-               192.168.50.10
-                     |
-            VMware NAT Network
-              192.168.50.0/24
-                     |
-          -----------------------
-          |                     |
-    PC01 - Windows 11      PC02 - Windows 11
-    Enterprise Eval.          (Planned)
-    Domain-Joined
-    DHCP: 192.168.50.129
+                   enterpriseit.local
+                           |
+                  DC01 - Windows Server
+                 AD DS / DNS / 192.168.50.10
+                           |
+                 VMware NAT (192.168.50.0/24)
+                           |
+                  --------------------
+                  |                  |
+             PC01 - Windows 11    PC02 (planned)
+             Domain-joined
+             IP via DHCP
 ```
 
-**Domain:** `enterpriseit.local`  
-**Domain Controller:** `DC01`  
-**Network:** `192.168.50.0/24`  
-**DNS Server:** `192.168.50.10`
+PC01 gets its IP address from VMware's NAT DHCP service and uses DC01 for DNS. A Windows Server DHCP role has **not** been configured yet.
 
-PC01 receives its IP address through DHCP and uses DC01 as its preferred DNS server.
+## Completed So Far
 
-## Implementation Progress
+### Windows Server and Active Directory
 
-### Completed
+- Installed Windows Server 2025 on DC01 and configured a static IP address.
+- Installed AD DS and promoted DC01 to a domain controller for `enterpriseit.local`.
+- Configured DNS for the domain.
 
-**1. Virtual Infrastructure Setup**
-- Installed and configured VMware Workstation Pro.
-- Created virtual machines for Windows Server 2025 and Windows 11 Enterprise.
-- Configured virtual networking using VMware NAT.
+### Windows 11 Client
 
-**2. Windows Server & Active Directory**
-- Installed and configured Windows Server 2025.
-- Assigned a static IP address to DC01.
-- Installed Active Directory Domain Services (AD DS).
-- Promoted DC01 to a domain controller.
-- Created the `enterpriseit.local` domain and configured DNS.
-
-**3. Windows Client Deployment**
 - Installed Windows 11 Enterprise Evaluation on PC01.
-- Configured DNS to communicate with the domain controller.
-- Verified connectivity using `ping` and `nslookup`.
-- Successfully joined PC01 to the Active Directory domain.
+- Set PC01's preferred DNS server to DC01.
+- Verified connectivity with `ping` and domain resolution with `nslookup`.
+- Joined PC01 to `enterpriseit.local`.
 
-**4. Active Directory Management**
-- Created Organizational Units (IT, Employees, Workstations).
-- Moved PC01 into the Workstations OU.
-- Created a test domain user account.
-- Successfully authenticated on PC01 using domain credentials.
+### Users and Organizational Units
 
-### Planned Improvements
+- Created the `IT`, `Employees`, and `Workstations` OUs.
+- Moved PC01 into `Workstations`.
+- Created the test user `john.doe` in `Employees` and signed in to PC01 with the domain account.
 
-- Configure and test Group Policies (GPO).
-- Expand the Active Directory structure with additional users, groups, and departments.
-- Deploy and join a second Windows 11 client (PC02).
-- Configure DHCP services on Windows Server.
-- Test access restrictions and centralized computer management.
+### Group Policy
+
+- **Workstations - Auto Lock 10 min:** Applied a computer policy setting a 600-second inactivity limit. Verified the GPO with `gpresult` and the configured value in the registry. The actual 10-minute lock has not been timed yet.
+- **Employees - Restrict Control Panel:** Applied a user policy to block Control Panel access. Tested it with `john.doe` and confirmed the restriction message.
+
+## Next Steps
+
+- Create departmental users and security groups.
+- Configure shared folders and NTFS permissions.
+- Add PC02 and test policies on another workstation.
+- Configure and test the Windows Server DHCP role.
+- Finish testing the automatic workstation lock.
 
 ## Documentation
 
-The complete step-by-step documentation includes installation procedures, network configurations, Active Directory setup, verification commands, and screenshots.
+[View setup and configuration notes](docs/README.md)
 
-**[View Full Step-by-Step Documentation](docs/README.md)**
-
-## What I Learned
-
-Through this project, I have gained hands-on experience with:
-
-- Installing and configuring Windows Server in a virtualized environment.
-- Understanding the role of Active Directory and domain controllers.
-- Configuring IP addresses and DNS for domain communication.
-- Joining Windows client machines to an Active Directory domain.
-- Creating and organizing user and computer objects using Organizational Units.
-- Testing domain authentication and network connectivity.
-
-## Future Development
-
-This project is ongoing and will be expanded with additional Windows Server services, Group Policy configurations, and enterprise IT administration scenarios.
