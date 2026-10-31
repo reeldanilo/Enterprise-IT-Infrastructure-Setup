@@ -1,6 +1,6 @@
 # Enterprise IT Infrastructure Home Lab
 
-A Windows Server home lab built with VMware Workstation Pro. I'm using it to practice managing a small Windows domain, from setting up the domain controller to joining client computers and applying Group Policies.
+A Windows Server home lab built with VMware Workstation Pro. I'm using it to manage a small Windows domain, from setting up the domain controller to joining client computers and applying Group Policies.
 
 ## Lab Setup
 
