@@ -469,4 +469,4 @@ Get-DhcpServerv4Scope
 
 ## 11. What I Learned
 
-This project helped me to learn how to install and manage Windows Server, set up a domain controller, and configure DNS and DHCP. I also worked with Active Directory users, OUs, and security groups, tested computer and user Group Policies, and configured access to shared folders.
+This project gave me hands-on practice installing and managing Windows Server, setting up a domain controller, and configuring DNS and DHCP. I also worked with Active Directory users, OUs, and security groups, tested computer and user Group Policies, and configured access to shared folders.
