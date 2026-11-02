@@ -1,6 +1,6 @@
 # Enterprise IT Infrastructure — Setup Documentation
 
-This document covers how I built and tested my Windows Server home lab. It includes the main configuration steps, settings, and commands used to check the results.
+These are the steps I followed to build my Windows Server home lab, along with the settings and commands I used to check the results.
 
 [Back to project overview](../README.md)
 
@@ -40,7 +40,6 @@ I built the environment in VMware Workstation Pro using Windows Server 2025 Eval
 | PC01 | Windows 11 Enterprise Evaluation | Domain-joined client | `192.168.50.100` (DHCP) |
 | PC02 | Windows 11 Enterprise Evaluation | Domain-joined client | `192.168.50.101` (DHCP) |
 
-The client IP addresses are DHCP leases observed during testing, not static assignments.
 
 ### Network settings
 
@@ -55,20 +54,17 @@ The client IP addresses are DHCP leases observed during testing, not static assi
 | Windows Server DHCP range | `192.168.50.100–192.168.50.200` |
 
 ```text
-                      enterpriseit.local
-                              |
-                    DC01 — Windows Server
-                    AD DS / DNS / DHCP
-                       192.168.50.10
-                              |
-                  VMware VMnet8 — NAT
-                      192.168.50.0/24
-                              |
-                   +----------+----------+
-                   |                     |
-             PC01 — Windows 11     PC02 — Windows 11
-              192.168.50.100       192.168.50.101
-               DHCP client          DHCP client
+                         VMware VMnet8 (NAT)
+                            192.168.50.0/24
+                         Gateway: 192.168.50.2
+                                   |
+                +------------------+------------------+
+                |                  |                  |
+               DC01               PC01               PC02
+         192.168.50.10       192.168.50.100     192.168.50.101
+            (static)             (DHCP)             (DHCP)
+         AD DS/DNS/DHCP       Windows 11         Windows 11
+         enterpriseit.local
 ```
 
 ## 2. VMware and Virtual Machines
@@ -79,7 +75,7 @@ The client IP addresses are DHCP leases observed during testing, not static assi
 4. Connected all three virtual machines to **VMnet8 (NAT)** so they could communicate on the same subnet.
 5. Configured VMnet8 with the `192.168.50.0/24` subnet.
 
-DC01 was allocated 4 GB of RAM. The Windows 11 clients were set up as separate virtual machines with their own computer names. VMware NAT provides the virtual gateway, the DHCP service was later moved from VMware to DC01.
+DC01 was allocated 4 GB of RAM. Each Windows 11 client was set up as a separate VM. VMware provides the NAT gateway but later I disabled VMware DHCP and configured DC01 to assign client addresses.
 
 ## 3. Windows Server and Network Configuration
 
@@ -111,8 +107,6 @@ ipconfig /all
 <p align="center">
   <img src="https://github.com/user-attachments/assets/d8a63cd3-2a19-4e73-94aa-9df9bb0e815a" alt="DC01 IPv4 settings" width="350">
 </p>
-
-
 
 ## 4. Active Directory and DNS
 
@@ -210,7 +204,7 @@ enterpriseit.local
 
 ### 6.2 Create users and security groups
 
-I created three test users and placed them in their respective department OUs. I also created three **Global / Security** groups in the Groups OU.
+I created three domain users and three global security groups. Each user was placed in the appropriate department OU.
 
 | User | Department OU | Security group |
 | --- | --- | --- |
@@ -218,9 +212,9 @@ I created three test users and placed them in their respective department OUs. I
 | `jane.doe` | Finance | `GRP_Finance` |
 | `alex.smith` | IT | `GRP_IT` |
 
-I added each user to the matching department group through the account's **Member Of** tab or the group's **Members** tab.
+Each user was added to the matching department group.
 
-The OUs organize users and determine where Group Policies apply. The security groups control access to resources such as shared folders.
+The OUs let me organize users and apply policies by department. The groups are used for folder permissions.
 
 <p align="center">
   <img src="https://github.com/user-attachments/assets/9a70cd5a-f373-47ae-b1e5-28e9321cbf29" alt="Active Directory organizational units and security groups" width="650">
@@ -255,7 +249,7 @@ I also verified that the inactivity limit was stored in the registry:
 reg query "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System" /v InactivityTimeoutSecs
 ```
 
-The result was `0x258`, which is 600 seconds. This confirmed that the setting was applied; the full 10-minute idle timeout was not timed separately.
+The result was `0x258`, which is 600 seconds.
 
 ### 7.2 Departmental Control Panel restriction
 
@@ -263,8 +257,6 @@ The result was `0x258`, which is 600 seconds. This confirmed that the setting wa
 **Linked to:** `Employees\HR` and `Employees\Finance`  
 **Setting:** `User Configuration → Policies → Administrative Templates → Control Panel → Prohibit access to Control Panel and PC settings`  
 **Value:** Enabled
-
-The GPO was originally linked to the parent Employees OU. After creating the departmental OUs, I linked the existing GPO directly to **HR** and **Finance** and removed its link from **Employees**. I kept the same GPO object rather than creating duplicate policies.
 
 To check user policy, I ran:
 
@@ -287,10 +279,10 @@ control
 | `jane.doe` | Finance | Blocked |
 | `alex.smith` | IT | Allowed |
 
-The tests confirmed that HR and Finance receive the restriction while IT does not.
+John and Jane were blocked from Control Panel. Alex could open it normally.
 
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/b1f5d628-af65-4806-a2ff-ecbe4880cc39" alt="Group Policy configuration" width="650">
+  <img width="1020" height="541" alt="Screenshot 2026-10-29 194824" src="https://github.com/user-attachments/assets/05994042-4b3a-4f3a-945d-a34a51b5b0d6" />
 </p>
 
 ## 8. File Sharing and Permissions
@@ -331,7 +323,7 @@ I opened each folder's **Properties → Sharing → Advanced Sharing**, enabled 
 | Finance | `\\DC01\Finance` | `GRP_Finance` |
 | IT | `\\DC01\IT` | `GRP_IT` |
 
-At the share-permission level, the corresponding department group received **Change** and **Read**. Domain administrators retained **Full Control**, and broad `Everyone` access was removed.
+At the share-permission level, the corresponding department group received **Change** and **Read**. Administrators retained **Full Control**, and broad `Everyone` access was removed.
 
 ### 8.4 Test access from a domain client
 
@@ -354,9 +346,11 @@ The tests included creating files where access was allowed and attempting access
 | Jane accessing and writing to Finance | Allowed |
 | John accessing Finance | Denied |
 
-These tests confirmed that both share permissions and NTFS permissions were restricting access by department.
+These checks confirmed that the effective access permissions worked as expected for the accounts and shares tested.
 
-<!-- Screenshots to add: NTFS/share permissions and allowed/denied access tests -->
+<p align="center">
+  <img width="533" height="205" alt="Screenshot 2026-11-01 010856" src="https://github.com/user-attachments/assets/dd3c3c03-ce2e-4ed5-90f6-372efa79854f" />
+</p>
 
 ## 9. DHCP Server
 
@@ -364,7 +358,7 @@ These tests confirmed that both share permissions and NTFS permissions were rest
 
 On DC01, I installed **DHCP Server** through **Server Manager → Add Roles and Features**.
 
-The post-deployment authorization initially failed. I signed in using a domain administrator account with the required Active Directory privileges and manually authorized DC01 from an elevated PowerShell session:
+The DHCP post-install authorization failed on the first attempt. I signed in as the built-in domain Administrator and authorized DC01 from an elevated PowerShell session:
 
 ```powershell
 Add-DhcpServerInDC -DnsName "DC01.enterpriseit.local" -IPAddress 192.168.50.10
@@ -475,6 +469,4 @@ Get-DhcpServerv4Scope
 
 ## 11. What I Learned
 
-This project gave me hands-on practice installing and managing Windows Server, setting up a domain controller, and configuring DNS and DHCP. I also worked with Active Directory users, OUs, and security groups, tested computer and user Group Policies, and configured access to shared folders.
-
-The troubleshooting was an important part of the lab. I worked through domain sign-in issues, permissions when moving OUs, DHCP authorization, and switching from VMware DHCP to Windows Server DHCP. Testing each change from a client helped me understand how the services work together.
+This project helped me to learn how to install and manage Windows Server, set up a domain controller, and configure DNS and DHCP. I also worked with Active Directory users, OUs, and security groups, tested computer and user Group Policies, and configured access to shared folders.
